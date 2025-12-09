@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Auth App{% endblock %}
+
+{% block content %}
+<div class="hero">
+    <h1>Welcome to Auth App</h1>
+    <p>A simple authentication system built with Flask</p>
+    
+    {% if current_user.is_authenticated %}
+        <p class="welcome-text">Hello, <strong>{{ current_user.username }}</strong>!</p>
+        <a href="{{ url_for('dashboard') }}" class="btn btn-primary">Go to Dashboard</a>
+    {% else %}
+        <div class="button-group">
+            <a href="{{ url_for('login') }}" class="btn btn-primary">Login</a>
+            <a href="{{ url_for('register') }}" class="btn btn-secondary">Register</a>
+        </div>
+    {% endif %}
+</div>
+
+<div class="features">
+    <h2>Features</h2>
+    <div class="feature-grid">
+        <div class="feature-card">
+            <h3>🔒 Secure Authentication</h3>
+            <p>Passwords are hashed using industry-standard algorithms</p>
+        </div>
+        <div class="feature-card">
+            <h3>🌐 RESTful API</h3>
+            <p>JSON endpoints for programmatic access</p>
+        </div>
+        <div class="feature-card">
+            <h3>📱 Responsive Design</h3>
+            <p>Works on desktop, tablet, and mobile devices</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

